@@ -8,8 +8,12 @@ import {useAppUpdate} from "@/hooks/useAppUpdate";
 import {AppUpdateModal} from "@/components/AppUpdateModal";
 import {ClipboardMonitorProvider} from '@/components/ClipboardMonitorProvider';
 import {ThemeProvider, useTheme} from "@/components/ThemeProvider";
+import {createURL} from "expo-linking";
+
 
 const queryClient = new QueryClient();
+const prefix = createURL('/');
+
 
 // Inner App component that uses useTheme (must be inside ThemeProvider)
 function App({updateAvailable, isDownloading, reloadApp}: {

@@ -20,35 +20,35 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
             backdropOpacity={0.5}
             useNativeDriver
         >
-            <View className="bg-white rounded-3xl p-8 mx-4 shadow-2xl">
+            <View className="bg-white dark:bg-slate-800 rounded-3xl p-8 mx-4 shadow-2xl">
                 {/* Icon Header */}
                 <View className="items-center mb-6">
                     <View className="bg-gradient-to-r from-blue-100 to-indigo-100 w-20 h-20 rounded-full items-center justify-center mb-4">
                         <Ionicons name="rocket" size={40} color="#3b82f6" />
                     </View>
 
-                    <Text className="text-2xl font-bold text-gray-900 mb-2">
-                        New Update Available! 🚀
+                    <Text className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                        WhichEmail New Update Available! 🚀
                     </Text>
 
-                    <View className="bg-blue-50 px-4 py-1.5 rounded-full">
-                        <Text className="text-blue-600 font-semibold text-xs">
-                            Version 2.0 Ready
+                    <View className="bg-blue-50 dark:bg-slate-700 px-4 py-1.5 rounded-full">
+                        <Text className="text-blue-600 dark:text-slate-100 font-semibold text-xs">
+                            Version 1.2.0 Ready
                         </Text>
                     </View>
                 </View>
 
                 {/* Content */}
                 <View className="mb-6">
-                    <Text className="text-gray-700 text-center text-base mb-4 leading-6">
-                        We've been working hard to bring you the best experience!
-                        This update includes exciting new features, performance improvements,
+                    <Text className="text-slate-700 dark:text-slate-100 text-center text-base mb-4 leading-6">
+                       Fanyi Charllson has been working hard to bring you the best experience!
+                        This update includes exciting new features, performance improvements, UI,
                         and important bug fixes.
                     </Text>
 
                     {/* Feature List */}
                     <View className="bg-gray-50 rounded-2xl p-4 mb-4">
-                        <Text className="text-gray-900 font-semibold mb-3 text-sm">
+                        <Text className="text-gray-900 dark:text-slate-100 font-semibold mb-3 text-sm">
                             What's New:
                         </Text>
                         <View className="space-y-2">
@@ -56,7 +56,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                                 <View className="bg-green-100 w-6 h-6 rounded-full items-center justify-center mr-3">
                                     <Ionicons name="checkmark" size={14} color="#10b981" />
                                 </View>
-                                <Text className="text-gray-600 text-sm flex-1">
+                                <Text className="text-gray-600 dark:text-slate-100 text-sm flex-1">
                                     Enhanced performance & speed
                                 </Text>
                             </View>
@@ -64,7 +64,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                                 <View className="bg-green-100 w-6 h-6 rounded-full items-center justify-center mr-3">
                                     <Ionicons name="checkmark" size={14} color="#10b981" />
                                 </View>
-                                <Text className="text-gray-600 text-sm flex-1">
+                                <Text className="text-gray-600 dark:text-slate-100 text-sm flex-1">
                                     Critical bug fixes
                                 </Text>
                             </View>
@@ -72,14 +72,14 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                                 <View className="bg-green-100 w-6 h-6 rounded-full items-center justify-center mr-3">
                                     <Ionicons name="checkmark" size={14} color="#10b981" />
                                 </View>
-                                <Text className="text-gray-600 text-sm flex-1">
+                                <Text className="text-gray-600 dark:text-slate-100 text-sm flex-1">
                                     Improved user experience
                                 </Text>
                             </View>
                         </View>
                     </View>
 
-                    <Text className="text-gray-500 text-center text-xs">
+                    <Text className="text-gray-500 dark:text-slate-100 text-center text-xs">
                         The update will take just a moment. Your data is safe and secure.
                     </Text>
                 </View>
@@ -91,7 +91,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                         <Text className="text-blue-600 font-semibold">
                             Updating Your App...
                         </Text>
-                        <Text className="text-gray-500 text-xs mt-1">
+                        <Text className="text-gray-500 dark:text-slate-100 text-xs mt-1">
                             Please wait while we apply the latest changes
                         </Text>
                     </View>
@@ -106,7 +106,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                     >
                         <View className="flex-row items-center justify-center">
                             <Ionicons name="refresh" size={20} color="white" className="mr-2" />
-                            <Text className="text-white text-center font-bold text-base ml-2">
+                            <Text className="text-white dark:text-slate-100 text-center font-bold text-base ml-2">
                                 Update Now
                             </Text>
                         </View>
@@ -115,7 +115,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
 
                 {/* Progress Indicator */}
                 {!isDownloading && (
-                    <Text className="text-gray-400 text-center text-xs mt-4">
+                    <Text className="text-gray-400 dark:text-slate-100 text-center text-xs mt-4">
                         Takes less than 5 seconds ⚡
                     </Text>
                 )}

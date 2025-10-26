@@ -18,28 +18,28 @@ export default function Index() {
                 return;
             }
 
-            // 1) Check if user is logged in via Appwrite session
+            // 1) Prefer checking for an active Appwrite session first
             let isLoggedIn = false;
             try {
-                await account.get();
-                isLoggedIn = true;
-
+                const session = await account.getSession({ sessionId: 'current' });
+                if (session && session.$id) {
+                    isLoggedIn = true;
+                }
             } catch {
+                isLoggedIn = false;
+            }
+
+            // 2) If we have a session, confirm user and proceed
+            if (isLoggedIn) {
                 try {
-                    const session = await account.getSession({ sessionId: 'current' });
-                    if (session && session.$id) {
-                        isLoggedIn = true;
-                    }
+                    // Confirm the user object is retrievable; if this fails, we'll treat as not logged in
+                    await account.get();
+                    try { await AsyncStorage.setItem('isAuthenticated', 'true'); } catch {}
+                    router.replace('/(tabs)');
+                    return;
                 } catch {
                     isLoggedIn = false;
                 }
-            }
-
-            // 2) If authenticated, go straight to dashboard and persist flag
-            if (isLoggedIn) {
-                try { await AsyncStorage.setItem('isAuthenticated', 'true'); } catch {}
-                router.replace('/(tabs)');
-                return;
             }
 
             // 3) Not authenticated: clear any stale flag and check welcome state

@@ -1,5 +1,7 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
+import React from "react";
+import {useTheme} from "@/components/ThemeProvider";
 
 interface ErrorScreenProps {
     title?: string;
@@ -16,8 +18,13 @@ export default function ErrorScreen({
                                         retryLabel = 'Try Again',
                                         showRetry = true,
                                     }: ErrorScreenProps) {
+    const {actualTheme} = useTheme();
     return (
-        <View className="flex-1 bg-gray-50 items-center justify-center px-6">
+        <View className="flex-1 bg-slate-50 dark:bg-slate-900 items-center justify-center px-6">
+            <StatusBar
+                barStyle={actualTheme === 'dark' ? 'light-content' : 'dark-content'}
+                backgroundColor={actualTheme === 'dark' ? '#0f172a' : '#ffffff'}
+            />
             {/* Error Icon */}
             <View className="items-center mb-8">
                 {/* Outer Circle with Pulse Effect */}
@@ -37,10 +44,10 @@ export default function ErrorScreen({
 
             {/* Error Content */}
             <View className="items-center mb-8 max-w-sm">
-                <Text className="text-gray-900 font-bold text-2xl mb-3 text-center">
+                <Text className="text-gray-900 dark:text-slate-100 font-bold text-2xl mb-3 text-center">
                     {title}
                 </Text>
-                <Text className="text-gray-500 text-center text-base leading-6">
+                <Text className="text-gray-500 dark:text-slate-100 dark:italic text-center text-base leading-6">
                     {message}
                 </Text>
             </View>

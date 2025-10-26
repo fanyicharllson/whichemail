@@ -14,7 +14,6 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import {router} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
-// import {StatusBar} from 'expo-status-bar';
 import SearchBar from '@/components/common/SearchBar';
 import {useTheme} from '@/components/ThemeProvider';
 import StatCard from '@/components/cards/StatCard';
@@ -23,11 +22,18 @@ import EmptyState from '@/components/common/EmptyState';
 import {useServices} from '@/services/queries/serviceQueries';
 import {useUser} from '@/services/hooks/userQueries';
 import {showToast} from '@/utils/toast';
+import {CategoriesModal, PasswordsModal, UniqueEmailsModal} from "@/components/StatsModal";
+import {QuickActionsMenu} from "@/components/QuickActionsMenu";
 
 
 export default function Home() {
     const {actualTheme} = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [showEmailsModal, setShowEmailsModal] = useState(false);
+    const [showPasswordsModal, setShowPasswordsModal] = useState(false);
+    const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+
     const {data: user, isLoading: loadingUser, error: userError} = useUser();
     const {
         data: services,
@@ -154,14 +160,27 @@ export default function Home() {
                             WhichEmail 🚀
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => router.push('/(tabs)/settings')}
-                        className="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-full items-center justify-center"
-                        disabled={isInitialLoading}
-                    >
-                        <Ionicons name="settings-outline" size={22}
-                                  color={actualTheme === 'dark' ? '#cbd5e1' : '#374151'}/>
-                    </TouchableOpacity>
+                    {/* Right side buttons */}
+                    <View className="flex-row items-center gap-2">
+                        <TouchableOpacity
+                            onPress={() => router.push('/(tabs)/settings')}
+                            className="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-full items-center justify-center"
+                            disabled={isInitialLoading}
+                        >
+                            <Ionicons
+                                name="settings-outline"
+                                size={22}
+                                color={actualTheme === 'dark' ? '#cbd5e1' : '#374151'}
+                            />
+                        </TouchableOpacity>
+
+                        {/* Quick Actions Menu */}
+                        <QuickActionsMenu
+                            userName={user?.name}
+                            totalServices={services?.length || 0}
+                            uniqueEmails={uniqueEmails}
+                        />
+                    </View>
                 </View>
 
                 {/* Search Bar */}
@@ -180,18 +199,22 @@ export default function Home() {
                     />
                 }
             >
-                {/* Stats */}
                 <View className="px-6 py-6">
                     <Text className="text-slate-900 dark:text-slate-100 font-bold text-lg mb-4">
                         Overview
                     </Text>
-                    <View className="flex-row gap-3">
+
+                    {/* Row 1 */}
+                    <View className="flex-row gap-3 mb-3">
                         <StatCard
                             title="Total Services"
                             value={services?.length || 0}
                             icon="apps"
                             color="#3b82f6"
                             bgColor="#dbeafe"
+                            gradientColors={['#3b82f6', '#60a5fa']}
+                            onPress={() => router.push('/(tabs)/services')}
+                            subtitle="Tap to view all"
                         />
                         <StatCard
                             title="Unique Emails"
@@ -199,15 +222,23 @@ export default function Home() {
                             icon="mail"
                             color="#10b981"
                             bgColor="#d1fae5"
+                            gradientColors={['#10b981', '#34d399']}
+                            onPress={() => setShowEmailsModal(true)}
+                            subtitle="Tap to explore"
                         />
                     </View>
-                    <View className="flex-row gap-3 mt-3">
+
+                    {/* Row 2 */}
+                    <View className="flex-row gap-3">
                         <StatCard
                             title="With Passwords"
                             value={servicesWithPassword}
                             icon="lock-closed"
                             color="#f59e0b"
                             bgColor="#fef3c7"
+                            gradientColors={['#f59e0b', '#fbbf24']}
+                            onPress={() => setShowPasswordsModal(true)}
+                            subtitle="Tap for details"
                         />
                         <StatCard
                             title="Categories"
@@ -215,6 +246,9 @@ export default function Home() {
                             icon="folder"
                             color="#8b5cf6"
                             bgColor="#ede9fe"
+                            gradientColors={['#8b5cf6', '#a78bfa']}
+                            onPress={() => setShowCategoriesModal(true)}
+                            subtitle="Auto-managed"
                         />
                     </View>
                 </View>
@@ -390,6 +424,25 @@ export default function Home() {
                     </View>
                 </View>
             </Modal>
+
+            {/*Modal that will appear when the stat icon is clicked*/}
+            <UniqueEmailsModal
+                visible={showEmailsModal}
+                onClose={() => setShowEmailsModal(false)}
+                services={services || []}
+            />
+
+            <PasswordsModal
+                visible={showPasswordsModal}
+                onClose={() => setShowPasswordsModal(false)}
+                services={services || []}
+            />
+
+            <CategoriesModal
+                visible={showCategoriesModal}
+                onClose={() => setShowCategoriesModal(false)}
+                services={services || []}
+            />
         </View>
     );
 }

@@ -5,11 +5,21 @@ import {showToast} from "@/utils/toast";
 // Raw fetcher for current user. Returns null if not authenticated.
 export const fetchCurrentUser = async () => {
   try {
+    // First, check if there's an active session to avoid guest scope errors
+    try {
+      const session = await account.getSession({ sessionId: 'current' });
+      if (!session || !session.$id) {
+        return null;
+      }
+    } catch {
+      return null;
+    }
+
+    // We have a session, now safely fetch the user
     return await account.get();
   } catch (e) {
-    // Not logged in or request failed
-    console.error(e);
-    showToast.error("Error!", "Failed to fetch user");
+    // If fetching user fails, treat as not authenticated without noisy toasts
+    console.warn('fetchCurrentUser: unable to get user, returning null');
     return null;
   }
 };

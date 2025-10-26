@@ -248,7 +248,8 @@ export default function AIAssistantScreen() {
             {/* Chat History */}
             <ScrollView
                 className="flex-1 p-4"
-                contentContainerStyle={{paddingBottom: 25}}
+                contentContainerStyle={{paddingBottom: 120}}
+                keyboardShouldPersistTaps="handled"
             >
                 {/* No Services State */}
                 {services.length === 0 && (

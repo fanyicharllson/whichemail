@@ -6,38 +6,40 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appwriteConfig} from "@/utils/expoContants";
 
 
-
-
 // 🔹 REGISTER
 export const useRegister = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: async ({name, email, password}: { name: string; email: string; password: string }) => {
-            const user = await account.create({ userId: ID.unique(), email, password, name });
+            const user = await account.create({userId: ID.unique(), email, password, name});
 
             // 2️⃣ End any active session
             try {
-                await account.deleteSession({ sessionId: 'current' });
-            } catch {}
+                await account.deleteSession({sessionId: 'current'});
+            } catch {
+            }
 
 
-            await account.createEmailPasswordSession({ email, password });
+            await account.createEmailPasswordSession({email, password});
 
             //  Store user info in Appwrite Table for extended profile
             await tablesDB.createRow({
-              databaseId: appwriteDbConfig.databaseId,
-              tableId: appwriteConfig.tableUserId,
-              rowId: ID.unique(),
-              data: { name, email, userId: user.$id }
+                databaseId: appwriteDbConfig.databaseId,
+                tableId: appwriteConfig.tableUserId,
+                rowId: ID.unique(),
+                data: {name, email, userId: user.$id}
             });
 
             return user;
         },
         onSuccess: async (data) => {
             showToast.success('Account Created 🎉', `Welcome ${data.name} to WhichEmail!`);
-            try { await AsyncStorage.setItem('isAuthenticated', 'true'); } catch {}
-            queryClient.invalidateQueries({ queryKey: ['user'] });
+            try {
+                await AsyncStorage.setItem('isAuthenticated', 'true');
+            } catch {
+            }
+            queryClient.invalidateQueries({queryKey: ['user']});
         },
         onError: (error: any) => {
             console.error('Registration error:', error);
@@ -54,18 +56,22 @@ export const useLogin = () => {
         mutationFn: async ({email, password}: { email: string; password: string }) => {
             // 2️⃣ End any active session
             try {
-                await account.deleteSession({ sessionId: 'current' });
-            } catch {}
+                await account.deleteSession({sessionId: 'current'});
+            } catch {
+            }
 
-            await account.createEmailPasswordSession({ email, password });
+            await account.createEmailPasswordSession({email, password});
 
             const user = await account.get();
             return user;
         },
         onSuccess: async (user) => {
             showToast.success('Welcome back 🎉', user.name || 'You’re logged in');
-            try { await AsyncStorage.setItem('isAuthenticated', 'true'); } catch {}
-            queryClient.invalidateQueries({ queryKey: ['user'] });
+            try {
+                await AsyncStorage.setItem('isAuthenticated', 'true');
+            } catch {
+            }
+            queryClient.invalidateQueries({queryKey: ['user']});
         },
         onError: (error: any) => {
             showToast.error('Login Failed 😞', error?.message || 'Invalid credentials');
@@ -79,11 +85,14 @@ export const useLogout = () => {
 
     return useMutation({
         mutationFn: async () => {
-            await account.deleteSession({ sessionId: 'current' });
+            await account.deleteSession({sessionId: 'current'});
         },
         onSuccess: async () => {
             showToast.success('Logged Out 👋', 'See you soon!');
-            try { await AsyncStorage.removeItem('isAuthenticated'); } catch {}
+            try {
+                await AsyncStorage.removeItem('isAuthenticated');
+            } catch {
+            }
             queryClient.clear();
         },
         onError: (error: any) => {
@@ -91,4 +100,30 @@ export const useLogout = () => {
         }
     });
 };
-  
+
+
+// FORGET PASSWORD
+export const useForgotPassword = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({email}: { email: string }) => {
+            // Optional: End any active session
+            try {
+                await account.deleteSession({sessionId: 'current'});
+            } catch {}
+
+            const resetUrl = 'https://dashboard.charlseempire.tech/apps/whichemail/reset-password'
+            return await account.createRecovery({email: email, url: resetUrl});
+
+        },
+        onSuccess: () => {
+            showToast.success('Password recovery email sent! ', 'Check your inbox and tap the link to reset.');
+        },
+        onError: (error: any) => {
+            console.error('Failed to send recovery email:', error);
+            showToast.error('Failed to send recovery email. Please try again.');
+
+        },
+    });
+};

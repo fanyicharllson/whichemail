@@ -125,7 +125,7 @@ export default function Login() {
 
                     <TouchableOpacity
                         className="mb-6"
-                        onPress={() => showToast.info("Coming Soon!")}
+                        onPress={() => router.push('/(auth)/forgot-password')}
                     >
                         <Text className="text-blue-600 dark:text-blue-400 font-semibold text-right">
                             Forgot Password?

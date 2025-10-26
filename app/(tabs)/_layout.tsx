@@ -1,10 +1,11 @@
 import {Tabs} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
-import { useColorScheme } from 'react-native';
-import { useTheme } from '@/components/ThemeProvider';
+import {useTheme} from '@/components/ThemeProvider';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function TabsLayout() {
-    const { actualTheme } = useTheme();
+    const {actualTheme} = useTheme();
+    const insets = useSafeAreaInsets();
     const isDark = actualTheme === 'dark';
     return (
         <Tabs
@@ -15,11 +16,15 @@ export default function TabsLayout() {
                     backgroundColor: isDark ? '#1e293b' : '#ffffff', // slate-800 : white
                     borderTopColor: isDark ? '#334155' : '#e2e8f0', // slate-700 : slate-200
                     borderTopWidth: 1,
-                    paddingBottom: 5
+                    // Perfect spacing for all devices
+                    height: 60 + (insets.bottom || 10), // Auto-adjusts for home indicator
+                    paddingBottom: Math.max(insets.bottom, 10), // Minimum 10px padding
+                    paddingTop: 8,
                 },
                 tabBarLabelStyle: {
                     fontSize: 13,
                     fontWeight: '600',
+                    marginBottom: 4,
                 },
                 headerShown: false,
             }}
@@ -47,7 +52,7 @@ export default function TabsLayout() {
                 options={{
                     title: 'AI Assistant',
                     tabBarIcon: ({color, size}) => (
-                      <Ionicons name="sparkles" size={size} color={color}/>
+                        <Ionicons name="sparkles" size={size} color={color}/>
                     ),
                 }}
             />
