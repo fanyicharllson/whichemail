@@ -234,7 +234,7 @@ export default function Register() {
 
                 {/* Social Sign Up */}
                 <TouchableOpacity
-                    className="flex-row items-center justify-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl py-4 mb-6"
+                    className="flex-row items-center justify-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl py-4"
                     onPress={signInWithGoogle}
                     // disabled={isPending || isAuthenticating}
                     disabled={true}
