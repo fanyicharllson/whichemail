@@ -16,6 +16,7 @@ import {categories} from '@/constants/categories';
 import {useCreateService} from '@/services/queries/serviceQueries';
 import {secureStorage} from "@/services/secureStorage";
 import {useTheme} from "@/components/ThemeProvider";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export default function AddService() {
     const [serviceName, setServiceName] = useState('');
@@ -24,13 +25,16 @@ export default function AddService() {
     const [notes, setNotes] = useState('');
     const [hasPassword, setHasPassword] = useState(true);
     const [categoryId, setCategoryId] = useState<string | null>(null);
-    const { actualTheme } = useTheme();
+    const {actualTheme} = useTheme();
 
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [passwordFeatureEnabled, setPasswordFeatureEnabled] = useState(false);
 
     const {mutate: createService, isPending} = useCreateService();
+
+    const insets = useSafeAreaInsets();
+
 
     useEffect(() => {
         const checkPasswordFeature = async () => {
@@ -98,11 +102,18 @@ export default function AddService() {
             </View>
 
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 className="flex-1"
                 keyboardVerticalOffset={100}
             >
-                <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    className="flex-1 px-6 pt-4"
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingBottom: Math.max(insets.bottom + 100, 120),
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
                     {/* Service Name */}
                     <View className="mb-4">
                         <Text className="text-slate-700 dark:text-slate-300 font-semibold mb-2">
@@ -323,13 +334,17 @@ export default function AddService() {
                             )}
                         </View>
                     )}
-
-                    {/* Actions */}
-                    <View className="mt-2 mb-8">
+                </ScrollView>
+                {/* Actions */}
+                <View
+                    className="p-4 border-t border-slate-200 dark:border-slate-700"
+                    style={{paddingBottom: Math.max(insets.bottom + 8, 16)}}
+                >
+                    <View className="mt-2 mb-8 flex-row gap-4">
                         <TouchableOpacity
                             onPress={handleSubmit}
                             disabled={!canSubmit || isPending}
-                            className={`rounded-xl py-4 items-center ${
+                            className={`rounded-xl py-4 items-center flex-1 ${
                                 !canSubmit || isPending
                                     ? 'bg-slate-300 dark:bg-slate-700'
                                     : 'bg-blue-600 dark:bg-blue-500'
@@ -345,14 +360,14 @@ export default function AddService() {
                         <TouchableOpacity
                             onPress={() => router.back()}
                             disabled={isPending}
-                            className="border border-slate-300 dark:border-slate-600 rounded-xl py-4 items-center"
+                            className="border flex-1 border-slate-300 dark:border-slate-600 rounded-xl py-4 items-center"
                         >
                             <Text className="text-slate-700 dark:text-slate-300 font-semibold text-base">
                                 Cancel
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </ScrollView>
+                </View>
             </KeyboardAvoidingView>
         </View>
     );

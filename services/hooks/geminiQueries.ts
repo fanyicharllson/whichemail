@@ -196,7 +196,7 @@ Return a JSON object:
         onError: (error: any) => {
             showToast.error(
                 "Recovery Failed",
-                error?.message || "Try providing more details"
+                error?.message || "Try providing more detail"
             );
         },
     });

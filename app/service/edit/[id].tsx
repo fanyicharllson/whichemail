@@ -21,11 +21,15 @@ import {secureStorage} from '@/services/secureStorage';
 import {showToast} from '@/utils/toast';
 import {authenticateUser} from "@/utils/authUtils";
 import {useTheme} from "@/components/ThemeProvider";
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
 
 export default function EditService() {
     const {id} = useLocalSearchParams<{ id: string }>();
     const {data: service, isLoading} = useService(id as string);
     const {mutate: updateService, isPending} = useUpdateService();
+
+    const insets = useSafeAreaInsets();
 
     const [serviceName, setServiceName] = useState('');
     const [email, setEmail] = useState('');
@@ -41,7 +45,7 @@ export default function EditService() {
     const [existingPassword, setExistingPassword] = useState<string | null>(null);
     const [passwordAuthenticated, setPasswordAuthenticated] = useState(false);
     const [loadingAuth, setLoadingAuth] = useState(false);
-    const { actualTheme } = useTheme();
+    const {actualTheme} = useTheme();
 
     useEffect(() => {
         if (service) {
@@ -223,11 +227,18 @@ export default function EditService() {
             </View>
 
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 className="flex-1"
                 keyboardVerticalOffset={100}
             >
-                <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    className="flex-1 px-6 pt-4"
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingBottom: Math.max(insets.bottom + 100, 120),
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
                     {/* Service Name */}
                     <View className="mb-4">
                         <Text className="text-slate-700 dark:text-slate-300 font-semibold mb-2">Service Name</Text>
@@ -470,8 +481,13 @@ export default function EditService() {
                             )}
                         </View>
                     )}
+                </ScrollView>
 
-                    {/* Actions */}
+                {/* Actions */}
+                <View
+                    className="p-4 border-t border-slate-200 dark:border-slate-700"
+                    style={{ paddingBottom: Math.max(insets.bottom + 20, 30) }}
+                >
                     <View className="mt-2 mb-8">
                         <Button
                             title={isPending ? 'Saving...' : 'Save Changes'}
@@ -483,11 +499,11 @@ export default function EditService() {
                         <Button
                             title="Cancel"
                             onPress={handleCancel}
-                            variant="outline"
+                            variant="secondary"
                             disabled={isPending}
                         />
                     </View>
-                </ScrollView>
+                </View>
             </KeyboardAvoidingView>
         </View>
     );

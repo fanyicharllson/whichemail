@@ -46,7 +46,7 @@ export default function Services() {
                 <View className="flex-row items-center justify-between mb-4">
                     <Text className="text-slate-900 dark:text-slate-100 font-bold text-2xl">All Services</Text>
                     <TouchableOpacity
-                        onPress={() => router.push('/service/add')}
+                        onPress={() => router.push('/service/add/add')}
                         className="bg-blue-600 px-4 py-2 rounded-full flex-row items-center"
                     >
                         <Ionicons name="add" size={20} color="white" />
@@ -81,7 +81,7 @@ export default function Services() {
                         <TouchableOpacity
                             key={category.id}
                             onPress={() => setSelectedCategory(category.id)}
-                            className={`px-4 py-2 rounded-full mr-2 flex-row items-center ${
+                            className={`px-4 py-2 rounded-full mr-2 flex-row items-center mx-2 ${
                                 selectedCategory === category.id ? 'bg-blue-600' : 'bg-slate-100 dark:bg-slate-700'
                             }`}
                         >
@@ -136,7 +136,7 @@ export default function Services() {
                         actionLabel={!searchQuery && !selectedCategory ? 'Add Service' : undefined}
                         onAction={
                             !searchQuery && !selectedCategory
-                                ? () => router.push('/service/add')
+                                ? () => router.push('/service/add/add')
                                 : undefined
                         }
                     />

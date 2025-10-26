@@ -77,7 +77,7 @@ export default function ForgotPasswordScreen() {
                             <Text className="text-blue-900 dark:text-blue-100 text-sm leading-6">
                                 <Text className="font-semibold">Next steps:{'\n'}</Text>
                                 1. Open your email inbox{'\n'}
-                                2. Click the reset link in the email{'\n'}
+                                2. Click the reset link(OR click the "Reset password" text) in the email{'\n'}
                                 3. Create your new password{'\n'}
                                 4. Login with new credentials
                             </Text>
@@ -109,7 +109,7 @@ export default function ForgotPasswordScreen() {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             className="flex-1 bg-slate-50 dark:bg-slate-900"
         >
             <StatusBar style={isDark ? 'light' : 'dark'}/>

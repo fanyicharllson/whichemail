@@ -66,6 +66,7 @@ export default function Input({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     className="flex-1 py-4 text-slate-900 dark:text-slate-100 text-base"
+
                 />
                 {secureTextEntry && (
                     <TouchableOpacity

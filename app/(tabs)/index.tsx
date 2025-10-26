@@ -283,7 +283,7 @@ export default function Home() {
                             title="No Services Yet"
                             message="Start tracking your emails by adding your first service"
                             actionLabel="Add Service"
-                            onAction={() => router.push('/service/add')}
+                            onAction={() => router.push('/service/add/add')}
                         />
                     )}
                 </View>
@@ -318,7 +318,7 @@ export default function Home() {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => router.push('/service/add')}
+                    onPress={() => router.push('/service/add/add')}
                     className="bg-blue-600 dark:bg-blue-700 w-16 h-16 rounded-full items-center justify-center shadow-lg active:scale-95"
                     activeOpacity={0.9}
                     disabled={isInitialLoading || !!error}

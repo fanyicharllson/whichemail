@@ -15,6 +15,7 @@ import {useAIChat, useEmailRecovery, useSmartSearch,} from "@/services/hooks/gem
 import {router} from "expo-router";
 import {useTheme} from "@/components/ThemeProvider";
 import {StatusBar} from "expo-status-bar";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 type Mode = "smart-search" | "recovery" | "chat";
 
@@ -30,6 +31,9 @@ export default function AIAssistantScreen() {
     const emailRecovery = useEmailRecovery();
     const aiChat = useAIChat();
     const {actualTheme} = useTheme();
+
+    const insets = useSafeAreaInsets();
+
 
     const handleSmartSearch = () => {
         if (!input.trim()) return;
@@ -139,7 +143,7 @@ export default function AIAssistantScreen() {
                             key={service.id}
                             className="bg-white dark:bg-slate-800 p-3.5 rounded-lg mb-2.5 border border-slate-200 dark:border-slate-700"
                             onPress={() => {
-                                router.push(`/service/${service.id}`);
+                                router.push(`/service/detail/${service.id}`);
                             }}
                         >
                             <View className="flex-row justify-between items-center mb-1.5">
@@ -171,7 +175,7 @@ export default function AIAssistantScreen() {
                         <TouchableOpacity
                             key={service.id}
                             className="bg-white dark:bg-slate-800 p-3.5 rounded-lg mb-2.5 border border-slate-200 dark:border-slate-700"
-                            onPress={() => router.push(`/service/${service.id}`)}
+                            onPress={() => router.push(`/service/detail/${service.id}`)}
                         >
                             <View className="flex-row justify-between items-center mb-1.5">
                                 <Text
@@ -194,8 +198,8 @@ export default function AIAssistantScreen() {
     return (
         <KeyboardAvoidingView
             className="flex-1 bg-slate-50 dark:bg-slate-900"
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={100}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
         >
             <StatusBar style={actualTheme === 'dark' ? 'light' : 'dark'}/>
 

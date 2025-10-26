@@ -5,6 +5,7 @@ import * as Clipboard from 'expo-clipboard';
 import {showToast} from '@/utils/toast';
 import {useTheme} from './ThemeProvider';
 import {router} from 'expo-router';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 interface BaseModalProps {
     visible: boolean;
@@ -26,6 +27,9 @@ export const UniqueEmailsModal: React.FC<UniqueEmailsModalProps> = ({
                                                                     }) => {
     const {actualTheme} = useTheme();
     const isDark = actualTheme === 'dark';
+
+    const insets = useSafeAreaInsets();
+
 
     // Get unique emails with service counts
     const emailStats = services.reduce((acc, service) => {
@@ -88,7 +92,14 @@ export const UniqueEmailsModal: React.FC<UniqueEmailsModalProps> = ({
                     </View>
 
                     {/* Email List */}
-                    <ScrollView className="px-6 py-4" showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        className="px-6 py-4"
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingBottom: Math.max(insets.bottom + 100, 120),
+                        }}
+                        keyboardShouldPersistTaps="handled"
+                    >
                         {uniqueEmailsList.map((item, index) => (
                             <View
                                 key={item.email}
@@ -177,6 +188,9 @@ export const PasswordsModal: React.FC<PasswordsModalProps> = ({
     const {actualTheme} = useTheme();
     const isDark = actualTheme === 'dark';
 
+    const insets = useSafeAreaInsets();
+
+
     const servicesWithPassword = services.filter(s => s.hasPassword);
     const servicesWithoutPassword = services.filter(s => !s.hasPassword);
 
@@ -205,7 +219,14 @@ export const PasswordsModal: React.FC<PasswordsModalProps> = ({
                         </View>
                     </View>
 
-                    <ScrollView className="px-6 py-4" showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        className="px-6 py-4"
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingBottom: Math.max(insets.bottom + 100, 120),
+                        }}
+                        keyboardShouldPersistTaps="handled"
+                    >
                         {/* Stats */}
                         <View className="flex-row gap-3 mb-4">
                             <View
@@ -239,7 +260,7 @@ export const PasswordsModal: React.FC<PasswordsModalProps> = ({
                                         key={service.id}
                                         onPress={() => {
                                             onClose();
-                                            router.push(`/service/${service.id}`);
+                                            router.push(`/service/detail/${service.id}`);
                                         }}
                                         className="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl mb-2 flex-row items-center justify-between"
                                     >
@@ -307,6 +328,8 @@ export const CategoriesModal: React.FC<CategoriesModalProps> = ({
                                                                 }) => {
     const {actualTheme} = useTheme();
     const isDark = actualTheme === 'dark';
+    const insets = useSafeAreaInsets();
+
 
     return (
         <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -336,7 +359,14 @@ export const CategoriesModal: React.FC<CategoriesModalProps> = ({
                         </Text>
                     </View>
 
-                    <ScrollView className="px-6 py-4" showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        className="px-6 py-4"
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingBottom: Math.max(insets.bottom + 100, 120),
+                        }}
+                        keyboardShouldPersistTaps="handled"
+                    >
                         {/* Info Card */}
                         <View
                             className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl mb-4 border border-blue-200 dark:border-blue-800">

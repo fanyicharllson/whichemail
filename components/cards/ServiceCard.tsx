@@ -14,7 +14,7 @@ export default function ServiceCard({service}: ServiceCardProps) {
 
     return (
         <TouchableOpacity
-            onPress={() => router.push(`/service/${service.id}`)}
+            onPress={() => router.push(`/service/detail/${service.id}`)}
             className="bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 shadow-sm border border-slate-200 dark:border-slate-700 active:scale-98"
             activeOpacity={0.7}
         >

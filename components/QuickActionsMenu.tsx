@@ -29,7 +29,7 @@ export const QuickActionsMenu: React.FC<QuickActionsMenuProps> = ({
             bgColor: isDark ? '#1e3a8a20' : '#dbeafe',
             action: () => {
                 setMenuVisible(false);
-                router.push('/service/add');
+                router.push('/service/add/add');
             },
         },
         {

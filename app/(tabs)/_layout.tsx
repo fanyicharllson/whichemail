@@ -17,9 +17,9 @@ export default function TabsLayout() {
                     borderTopColor: isDark ? '#334155' : '#e2e8f0', // slate-700 : slate-200
                     borderTopWidth: 1,
                     // Perfect spacing for all devices
-                    height: 60 + (insets.bottom || 10), // Auto-adjusts for home indicator
-                    paddingBottom: Math.max(insets.bottom, 10), // Minimum 10px padding
-                    paddingTop: 8,
+                    height: 60 + (insets.bottom || 20), // Auto-adjusts for home indicator
+                    paddingBottom: Math.max(insets.bottom, 20), // Minimum 20px padding
+                    paddingTop: 10,
                 },
                 tabBarLabelStyle: {
                     fontSize: 13,

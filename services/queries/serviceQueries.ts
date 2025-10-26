@@ -230,7 +230,7 @@ export const useUpdateService = () => {
 
             queryClient.invalidateQueries({queryKey: ['services', user?.$id]});
 
-            showToast.success('Service Updated ✅', 'Your service details have been saved');
+            showToast.success('Service Updated ✅', 'Your service detail have been saved');
         },
 
         onError: (error: any) => {
