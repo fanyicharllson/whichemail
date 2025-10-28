@@ -1,5 +1,6 @@
 // hooks/useAppUpdate.ts
 import * as Updates from "expo-updates";
+import Constants from "expo-constants";
 import {useEffect, useState} from "react";
 
 export const useAppUpdate = () => {
@@ -8,6 +9,13 @@ export const useAppUpdate = () => {
 
     useEffect(() => {
         const checkForUpdates = async () => {
+            // Skip update checks when running in Expo Go or in development mode.
+            // expo-updates checkForUpdateAsync is only supported in standalone / EAS builds.
+            if (__DEV__ || Constants.appOwnership === "expo") {
+                // Skip silently in development / Expo Go
+                return;
+            }
+
             try {
                 const update = await Updates.checkForUpdateAsync();
                 if (update.isAvailable) {

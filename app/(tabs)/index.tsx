@@ -24,6 +24,7 @@ import {useUser} from '@/services/hooks/userQueries';
 import {showToast} from '@/utils/toast';
 import {CategoriesModal, PasswordsModal, UniqueEmailsModal} from "@/components/StatsModal";
 import {QuickActionsMenu} from "@/components/QuickActionsMenu";
+import AnalyticsButton from '@/components/AnalyticsButton';
 
 
 export default function Home() {
@@ -117,7 +118,7 @@ export default function Home() {
             addButtonAnim.setValue(1);
             addButtonScale.setValue(1);
         }
-    }, [isInitialLoading, error]);
+    }, [isInitialLoading, error, aiButtonAnim, aiButtonScale, addButtonAnim, addButtonScale]);
 
     //show error toast if error
     if (error) {
@@ -187,6 +188,7 @@ export default function Home() {
                 <SearchBar value={searchQuery} onChangeText={setSearchQuery}/>
             </View>
 
+                {/* Recent service and stats card  */}
             <ScrollView
                 className="flex-1"
                 showsVerticalScrollIndicator={false}
@@ -201,7 +203,7 @@ export default function Home() {
             >
                 <View className="px-6 py-6">
                     <Text className="text-slate-900 dark:text-slate-100 font-bold text-lg mb-4">
-                        Overview
+                       Service Overview
                     </Text>
 
                     {/* Row 1 */}
@@ -252,6 +254,11 @@ export default function Home() {
                         />
                     </View>
                 </View>
+
+                <View className='px-6 pb-6'>
+                     <AnalyticsButton/>
+                </View>
+
 
                 {/* Recent Services */}
                 <View className="px-6 pb-6">

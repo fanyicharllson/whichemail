@@ -33,6 +33,17 @@ export const QuickActionsMenu: React.FC<QuickActionsMenuProps> = ({
             },
         },
         {
+            icon: 'stats-chart',
+            label: 'Analytics',
+            subtitle: 'View insights',
+            color: '#8b5cf6',
+            bgColor: isDark ? '#4c1d9520' : '#ede9fe',
+            action: () => {
+                setMenuVisible(false);
+                router.push('/service/analitics/analytics');
+            },
+        },
+        {
             icon: 'search',
             label: 'Search Services',
             subtitle: 'Find quickly',
@@ -88,6 +99,7 @@ export const QuickActionsMenu: React.FC<QuickActionsMenuProps> = ({
                 syncData();
             },
         },
+
     ];
 
     const showStatsToast = () => {
