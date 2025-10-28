@@ -13,6 +13,7 @@ import {showToast} from '@/utils/toast';
 import ErrorScreen from "@/components/common/ErrorScreen";
 import {authenticateUser} from "@/utils/authUtils";
 import {useTheme} from "@/components/ThemeProvider";
+import { useFavorites } from '@/services/hooks/useFavorites';
 
 export default function ServiceDetail() {
     const {id} = useLocalSearchParams<{ id: string }>();
@@ -23,6 +24,7 @@ export default function ServiceDetail() {
     const [showPassword, setShowPassword] = useState(false);
     const [loadingPassword, setLoadingPassword] = useState(false);
     const {actualTheme} = useTheme();
+    const { toggleFavorite, isFavorite } = useFavorites();
 
     useEffect(() => {
         // Check if password exists when component mounts
@@ -192,6 +194,16 @@ export default function ServiceDetail() {
                         {service.serviceName}
                     </Text>
                     <View className="flex-row gap-2">
+                         <TouchableOpacity
+                            onPress={() => toggleFavorite(service.id)}
+                            className="w-10 h-10 rounded-full items-center justify-center bg-yellow-50 dark:bg-yellow-900/30"
+                        >
+                            <Ionicons 
+                                name={isFavorite(service.id) ? "star" : "star-outline"} 
+                                size={20} 
+                                color="#f59e0b" 
+                            />
+                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={handleEdit}
                             className="w-10 h-10 rounded-full items-center justify-center bg-blue-50 dark:bg-blue-900 active:bg-blue-100 dark:active:bg-blue-800"

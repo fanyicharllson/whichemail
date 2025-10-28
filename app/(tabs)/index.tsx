@@ -25,6 +25,7 @@ import {showToast} from '@/utils/toast';
 import {CategoriesModal, PasswordsModal, UniqueEmailsModal} from "@/components/StatsModal";
 import {QuickActionsMenu} from "@/components/QuickActionsMenu";
 import AnalyticsButton from '@/components/AnalyticsButton';
+import { FavoritesSection } from '@/components/FavoriteSection';
 
 
 export default function Home() {
@@ -255,9 +256,13 @@ export default function Home() {
                     </View>
                 </View>
 
+                {/* Analytics Button */}
                 <View className='px-6 pb-6'>
                      <AnalyticsButton/>
                 </View>
+
+                {/* Favorite Services Section */}
+                {!isLoading && <FavoritesSection services={services || []} />}
 
 
                 {/* Recent Services */}

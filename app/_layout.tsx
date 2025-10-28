@@ -10,6 +10,26 @@ import { AppUpdateModal } from "@/components/AppUpdateModal";
 import { ClipboardMonitorProvider } from "@/components/ClipboardMonitorProvider";
 import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
 import { createURL } from "expo-linking";
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://25e0a6978df07d48859aa843db0fb26e@o4508563067699200.ingest.de.sentry.io/4510264738775120',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration(), Sentry.feedbackIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 const queryClient = new QueryClient();
 const prefix = createURL("/");
@@ -48,7 +68,7 @@ function App({
   );
 }
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
   // Call useAppUpdate here (outside providers)
   const { updateAvailable, isDownloading, reloadApp } = useAppUpdate();
 
@@ -64,4 +84,4 @@ export default function RootLayout() {
       </ThemeProvider>
     </QueryClientProvider>
   );
-}
+});
