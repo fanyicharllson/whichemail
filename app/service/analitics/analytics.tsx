@@ -17,10 +17,20 @@ import { BarChart } from 'react-native-chart-kit';
 import { useServices } from '@/services/queries/serviceQueries';
 import { useTheme } from '@/components/ThemeProvider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
+
 export default function AnalyticsScreen() {
+  return (
+    <ErrorBoundary>
+      <ActualAnalyticsContent />
+    </ErrorBoundary>
+  );
+}
+
+function ActualAnalyticsContent() {
   const { data: services = [], isLoading } = useServices();
   const { actualTheme } = useTheme();
   const isDark = actualTheme === 'dark';

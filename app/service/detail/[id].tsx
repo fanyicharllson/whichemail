@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Linking, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
+import {ActivityIndicator, Alert, Linking, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
 import {StatusBar} from 'expo-status-bar';
 import {Ionicons} from '@expo/vector-icons';
 import {router, useLocalSearchParams} from 'expo-router';
@@ -7,13 +7,12 @@ import * as Clipboard from 'expo-clipboard';
 import LoadingScreen from '@/components/common/LoadingScreen';
 import EmptyState from '@/components/common/EmptyState';
 import {getCategoryById} from '@/constants/categories';
-import {useDeleteService, useService} from '@/services/queries/serviceQueries';
+import {useDeleteService, useService, useToggleFavorite} from '@/services/queries/serviceQueries';
 import {secureStorage} from '@/services/secureStorage';
 import {showToast} from '@/utils/toast';
 import ErrorScreen from "@/components/common/ErrorScreen";
 import {authenticateUser} from "@/utils/authUtils";
 import {useTheme} from "@/components/ThemeProvider";
-import { useFavorites } from '@/services/hooks/useFavorites';
 
 export default function ServiceDetail() {
     const {id} = useLocalSearchParams<{ id: string }>();
@@ -24,7 +23,8 @@ export default function ServiceDetail() {
     const [showPassword, setShowPassword] = useState(false);
     const [loadingPassword, setLoadingPassword] = useState(false);
     const {actualTheme} = useTheme();
-    const { toggleFavorite, isFavorite } = useFavorites();
+     const { mutate: toggleFavorite, isPending: togglingFavorite } = useToggleFavorite();
+    
 
     useEffect(() => {
         // Check if password exists when component mounts
@@ -195,15 +195,24 @@ export default function ServiceDetail() {
                     </Text>
                     <View className="flex-row gap-2">
                          <TouchableOpacity
-                            onPress={() => toggleFavorite(service.id)}
-                            className="w-10 h-10 rounded-full items-center justify-center bg-yellow-50 dark:bg-yellow-900/30"
-                        >
-                            <Ionicons 
-                                name={isFavorite(service.id) ? "star" : "star-outline"} 
-                                size={20} 
-                                color="#f59e0b" 
-                            />
-                        </TouchableOpacity>
+                         onPress={() => toggleFavorite({ 
+                                            serviceId: service.id, 
+                                            isFavorite: !service.isFavorite 
+                                        })}
+                                        disabled={togglingFavorite}
+                                        className="w-10 h-10 rounded-full items-center justify-center bg-yellow-50 dark:bg-yellow-900/30 active:bg-yellow-100"
+                                        accessibilityLabel={service.isFavorite ? "Remove from favorites" : "Add to favorites"}
+                                    >
+                                        {togglingFavorite ? (
+                                            <ActivityIndicator size="small" color="#f59e0b" />
+                                        ) : (
+                                            <Ionicons 
+                                                name={service.isFavorite ? "star" : "star-outline"} 
+                                                size={20} 
+                                                color="#f59e0b" 
+                                            />
+                                        )}
+                             </TouchableOpacity>
                         <TouchableOpacity
                             onPress={handleEdit}
                             className="w-10 h-10 rounded-full items-center justify-center bg-blue-50 dark:bg-blue-900 active:bg-blue-100 dark:active:bg-blue-800"

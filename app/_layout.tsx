@@ -9,8 +9,11 @@ import { useAppUpdate } from "@/hooks/useAppUpdate";
 import { AppUpdateModal } from "@/components/AppUpdateModal";
 import { ClipboardMonitorProvider } from "@/components/ClipboardMonitorProvider";
 import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
+import { NetworkProvider, useNetwork } from '@/components/NetworkProvider';
+import NetworkErrorModal from '@/components/common/NetworkErrorModal';
 import { createURL } from "expo-linking";
 import * as Sentry from '@sentry/react-native';
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 Sentry.init({
   dsn: 'https://25e0a6978df07d48859aa843db0fb26e@o4508563067699200.ingest.de.sentry.io/4510264738775120',
@@ -47,24 +50,46 @@ function App({
   const { actualTheme } = useTheme(); // Now safe to call here
 
   return (
+    <ErrorBoundary>
     <ClipboardMonitorProvider>
-      <StatusBar style="light" />
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="welcome" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="service" />
-      </Stack>
-      {/* Toast config */}
-      <Toast config={getToastConfig(actualTheme)} />
+      <NetworkProvider>
+        <StatusBar style="light" />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="welcome" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="service" />
+        </Stack>
+        {/* Toast config */}
+        <Toast config={getToastConfig(actualTheme)} />
 
-      {/* Update modal in case any updates */}
-      <AppUpdateModal
-        visible={updateAvailable}
-        isDownloading={isDownloading}
-        onReload={reloadApp}
-      />
+        {/* Update modal in case any updates */}
+        <AppUpdateModal
+          visible={updateAvailable}
+          isDownloading={isDownloading}
+          onReload={reloadApp}
+        />
+
+        {/* Network overlay */}
+        <NetworkOverlay />
+      </NetworkProvider>
     </ClipboardMonitorProvider>
+    </ErrorBoundary>
+  );
+}
+
+// Small overlay component that consumes network context to render global modal
+function NetworkOverlay() {
+  const {isConnected, error, triggerRefetch} = useNetwork();
+
+  return (
+    <NetworkErrorModal
+      visible={isConnected === false}
+      error={error}
+      onRetry={async () => {
+        await triggerRefetch();
+      }}
+    />
   );
 }
 

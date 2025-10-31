@@ -22,6 +22,12 @@ export default function ExportDataScreen() {
     try {
       setExporting(true);
 
+      // Ensure expo-sharing (imported at top) exposes isAvailableAsync in this build
+      if (typeof (Sharing as any)?.isAvailableAsync !== "function") {
+        showToast.error("Export unavailable", "Sharing feature not available in this build");
+        return;
+      }
+
       // Prepare export data (without sensitive passwords)
       const exportData = {
         app: "WhichEmail",
@@ -77,6 +83,12 @@ export default function ExportDataScreen() {
   const exportToCSV = async () => {
     try {
       setExporting(true);
+
+      // Ensure expo-sharing (imported at top) exposes isAvailableAsync in this build
+      if (typeof (Sharing as any)?.isAvailableAsync !== "function") {
+        showToast.error("Export unavailable", "Sharing feature not available in this build");
+        return;
+      }
 
       // CSV header
       let csv =

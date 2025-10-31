@@ -1,7 +1,6 @@
 import {
     ActivityIndicator,
     Animated,
-    BackHandler,
     Easing,
     Modal,
     RefreshControl,
@@ -22,9 +21,10 @@ import EmptyState from '@/components/common/EmptyState';
 import {useServices} from '@/services/queries/serviceQueries';
 import {useUser} from '@/services/hooks/userQueries';
 import {showToast} from '@/utils/toast';
+import {useNetwork} from '@/components/NetworkProvider';
 import {CategoriesModal, PasswordsModal, UniqueEmailsModal} from "@/components/StatsModal";
 import {QuickActionsMenu} from "@/components/QuickActionsMenu";
-import AnalyticsButton from '@/components/AnalyticsButton';
+// import AnalyticsButton from '@/components/AnalyticsButton'; ===>  COMMING IN V2
 import { FavoritesSection } from '@/components/FavoriteSection';
 
 
@@ -45,7 +45,9 @@ export default function Home() {
         error: servicesError,
     } = useServices();
 
-    // Track initial load
+    const {registerRefetch, unregisterRefetch} = useNetwork();
+
+    // Track initial load and errors
     const isInitialLoading = isLoading || loadingUser;
     const error = userError || servicesError;
 
@@ -64,6 +66,14 @@ export default function Home() {
             );
         }
     }, [isLoading, services]);
+
+    // Register refetch with global network provider so the global Retry button can trigger it
+    useEffect(() => {
+        const id = registerRefetch(refetch);
+        return () => {
+            unregisterRefetch(id);
+        };
+    }, [refetch, registerRefetch, unregisterRefetch]);
 
     //Animation for floating btns
     useEffect(() => {
@@ -121,14 +131,6 @@ export default function Home() {
         }
     }, [isInitialLoading, error, aiButtonAnim, aiButtonScale, addButtonAnim, addButtonScale]);
 
-    //show error toast if error
-    if (error) {
-        showToast.error(
-            'Error setting up your workspace! 😥',
-            (servicesError as any)?.message || (userError as any)?.message || 'Please try again'
-        );
-    }
-
     // ✅ Pre-calculate stats safely
     const uniqueEmails = new Set(services?.map((s) => s.email) ?? []).size;
     const servicesWithPassword =
@@ -148,6 +150,7 @@ export default function Home() {
             <StatusBar
                 barStyle={actualTheme === 'dark' ? 'light-content' : 'dark-content'}
                 backgroundColor={actualTheme === 'dark' ? '#0f172a' : '#ffffff'}
+                
             />
 
             {/* Header */}
@@ -256,7 +259,7 @@ export default function Home() {
                     </View>
                 </View>
 
-                {/* Analytics Button */}
+                {/* Analytics Button  */}
                 <View className='px-6 pb-6'>
                      <AnalyticsButton/>
                 </View>
@@ -379,63 +382,8 @@ export default function Home() {
                 </View>
             </Modal>
 
-            {/* ✨ Modern error modal overlay */}
-            <Modal
-                visible={!!error}
-                transparent={true}
-                animationType="fade"
-                statusBarTranslucent={true}
-            >
-                <View className="flex-1 bg-black/50 items-center justify-center">
-                    <View className="bg-white dark:bg-slate-800 rounded-3xl px-8 py-10 mx-6 items-center shadow-2xl">
-                        {/* Animated Spinner */}
-                        <View className="mb-6">
-                            <ActivityIndicator size="large" color="#3b82f6"/>
-                        </View>
-
-                        {/* Icon */}
-                        <View
-                            className="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded-full items-center justify-center mb-4">
-                            <Ionicons name="sync" size={32} color="#3b82f6"/>
-                        </View>
-
-                        {/* Error Text */}
-                        <Text className="text-red-900 dark:text-red-400 font-bold text-xl mb-2">
-                            Error Loading Dashboard
-                        </Text>
-                        <Text className="text-red-500 dark:text-red-300 text-center text-sm mb-6">
-                            Error Setting up your workspace 😥...{`\n`}Please ensure you are connected to the internet
-                        </Text>
-
-                        {/* Progress Dots */}
-                        <View className="flex-row gap-2 mb-8">
-                            <View className="w-2 h-2 bg-red-600 rounded-full animate-pulse"/>
-                            <View className="w-2 h-2 bg-red-400 rounded-full animate-pulse"
-                                  style={{animationDelay: '0.2s'}}/>
-                            <View className="w-2 h-2 bg-red-300 rounded-full animate-pulse"
-                                  style={{animationDelay: '0.4s'}}/>
-                        </View>
-
-                        {/* Buttons */}
-                        <View className="flex-row gap-4">
-                            <TouchableOpacity
-                                onPress={() => refetch()} // Retry by refetching services
-                                className="bg-blue-600 px-6 py-3 rounded-xl flex-row items-center"
-                            >
-                                <Ionicons name="refresh" size={18} color="white" style={{marginRight: 8}}/>
-                                <Text className="text-white font-semibold">Retry</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => BackHandler.exitApp()} // Close the app entirely
-                                className="bg-slate-200 dark:bg-slate-700 px-6 py-3 rounded-xl flex-row items-center"
-                            >
-                                <Ionicons name="close" size={18} color="#374151" style={{marginRight: 8}}/>
-                                <Text className="text-slate-900 dark:text-slate-100 font-semibold">Close App</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            
+            {/* Global network modal is provided by NetworkProvider */}
 
             {/*Modal that will appear when the stat icon is clicked*/}
             <UniqueEmailsModal

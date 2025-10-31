@@ -6,6 +6,7 @@
     notes?: string;
     website?: string;
     hasPassword: boolean;
+    isFavorite: boolean;
     createdAt: string;
     updatedAt: string;
 }
