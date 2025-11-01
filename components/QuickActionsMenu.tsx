@@ -111,7 +111,7 @@ export const QuickActionsMenu: React.FC<QuickActionsMenuProps> = ({
 
     const shareApp = async () => {
         try {
-            const ANDROID_DOWNLOAD_LINK = 'https://expo.dev/artifacts/eas/nCoggtk89jCDZX6mG18Cyc.apk';
+            const ANDROID_DOWNLOAD_LINK = 'https://expo.dev/artifacts/eas/qBD26CXCdUpu5a69P9Hxe3.apk';
 
             const message = `Hey! 👋 I'm using WhichEmail to manage all my login credentials. It's super helpful! 🚀
 
