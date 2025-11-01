@@ -206,7 +206,7 @@ export default function Login() {
                 <View className="px-6 pb-12">
                     <View className="flex-row items-center justify-center">
                         <Text className="text-slate-600 dark:text-slate-400">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?
                         </Text>
                         <TouchableOpacity
                             onPress={() => router.push('/(auth)/register')}

@@ -334,7 +334,7 @@ export default function Settings() {
                   Version
                 </Text>
                 <Text className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
-                  1.1.3
+                  2.0.0
                 </Text>
               </View>
             </View>

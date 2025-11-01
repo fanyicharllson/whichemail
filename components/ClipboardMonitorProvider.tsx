@@ -16,6 +16,7 @@ export const ClipboardMonitorProvider: React.FC<ClipboardMonitorProviderProps> =
 
     // Monitor clipboard regardless of auth status (to show prompts)
     // But we'll check auth when user tries to save
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {isMonitoring} = useClipboardMonitor({
         enabled: true, // Always monitor to detect emails
         onEmailDetected: (detection) => {

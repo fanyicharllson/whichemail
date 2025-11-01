@@ -28,22 +28,22 @@ export default function ServiceDetail() {
 
     useEffect(() => {
         // Check if password exists when component mounts
+        const checkPasswordExists = async () => {
+            if (!service?.id) return;
+            try {
+                const savedPassword = await secureStorage.getPassword(service.id);
+                if (savedPassword) {
+                    setPassword(savedPassword);
+                }
+            } catch (error) {
+                console.error('Error checking password:', error);
+            }
+        };
+
         if (service?.hasPassword && service?.id) {
             checkPasswordExists();
         }
     }, [service]);
-
-    const checkPasswordExists = async () => {
-        if (!service?.id) return;
-        try {
-            const savedPassword = await secureStorage.getPassword(service.id);
-            if (savedPassword) {
-                setPassword(savedPassword);
-            }
-        } catch (error) {
-            console.error('Error checking password:', error);
-        }
-    };
 
     const handleViewPassword = async () => {
         if (!password || showPassword) {
@@ -68,6 +68,7 @@ export default function ServiceDetail() {
             await Clipboard.setStringAsync(text);
             showToast.success(`${label} Copied!`, 'Copied to clipboard');
         } catch (error) {
+            console.error(`Error copying text: ${error}`);
             showToast.error('Copy Failed', 'Unable to copy to clipboard');
         }
     };

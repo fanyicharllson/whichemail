@@ -68,7 +68,7 @@ export default function ForgotPasswordScreen() {
                         </Text>
 
                         <Text className="text-slate-600 dark:text-slate-400 text-center text-base leading-6 mb-6">
-                            We've sent password reset instructions to{'\n'}
+                            We&apos;ve sent password reset instructions to{'\n'}
                             <Text className="font-semibold text-blue-500">{email}</Text>
                         </Text>
 
@@ -77,14 +77,14 @@ export default function ForgotPasswordScreen() {
                             <Text className="text-blue-900 dark:text-blue-100 text-sm leading-6">
                                 <Text className="font-semibold">Next steps:{'\n'}</Text>
                                 1. Open your email inbox{'\n'}
-                                2. Click the reset link(OR click the "Reset password" text) in the email{'\n'}
+                                2. Click the reset link(OR click the &quot;Reset password&quot; text) in the email{'\n'}
                                 3. Create your new password{'\n'}
                                 4. Login with new credentials
                             </Text>
                         </View>
 
                         <Text className="text-slate-500 dark:text-slate-400 text-xs text-center mb-8">
-                            Didn't receive the email? Check your spam folder or{' '}
+                            Didn&apos;t receive the email? Check your spam folder or{' '}
                             <Text
                                 className="text-blue-500 font-semibold"
                                 onPress={() => setEmailSent(false)}
@@ -149,7 +149,7 @@ export default function ForgotPasswordScreen() {
                     </Text>
 
                     <Text className="text-slate-600 dark:text-slate-400 text-center text-base mb-8 leading-6">
-                        No worries! Enter your email and we'll send you reset instructions.
+                        No worries! Enter your email and we&apos;ll send you reset instructions.
                     </Text>
 
                     {/* Email Input */}
@@ -217,7 +217,7 @@ export default function ForgotPasswordScreen() {
                                 style={{marginTop: 2, marginRight: 8}}
                             />
                             <Text className="text-slate-600 dark:text-slate-400 text-xs flex-1 leading-5">
-                                The reset link will expire in 1 hour. If you don't receive the email,
+                                The reset link will expire in 1 hour. If you don&apos;t receive the email,
                                 check your spam folder or contact Charllson support. 😎
                             </Text>
                         </View>

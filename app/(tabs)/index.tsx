@@ -24,7 +24,7 @@ import {showToast} from '@/utils/toast';
 import {useNetwork} from '@/components/NetworkProvider';
 import {CategoriesModal, PasswordsModal, UniqueEmailsModal} from "@/components/StatsModal";
 import {QuickActionsMenu} from "@/components/QuickActionsMenu";
-// import AnalyticsButton from '@/components/AnalyticsButton'; ===>  COMMING IN V2
+import AnalyticsButton from '@/components/AnalyticsButton';
 import { FavoritesSection } from '@/components/FavoriteSection';
 
 

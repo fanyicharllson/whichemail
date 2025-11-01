@@ -63,6 +63,7 @@ export default function AddService() {
                 categoryId: categoryId as string,
                 website: website.trim() || undefined,
                 notes: notes.trim() || undefined,
+                isFavorite: false,
                 hasPassword,
             },
             {

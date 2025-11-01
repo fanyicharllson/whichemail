@@ -49,7 +49,7 @@ export const AppUpdateModal = ({visible, isDownloading, onReload}: Props) => {
                     {/* Feature List */}
                     <View className="bg-gray-50 dark:bg-slate-700 rounded-2xl p-4 mb-4">
                         <Text className="text-gray-900 dark:text-slate-100 font-semibold mb-3 text-sm">
-                            What's New:
+                            What&apos;s New:
                         </Text>
                         <View className="space-y-2">
                             <View className="flex-row items-center mb-2">

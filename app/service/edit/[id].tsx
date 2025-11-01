@@ -56,30 +56,30 @@ export default function EditService() {
             setHasPassword(service.hasPassword);
             setCategoryId(service.categoryId);
 
+            const checkPasswordSetup = async () => {
+                if (!service?.id) return;
+
+                try {
+                    // Check if password feature is enabled
+                    const enabled = await secureStorage.isPasswordFeatureEnabled();
+                    setPasswordFeatureEnabled(enabled);
+
+                    // Check if service has existing password
+                    if (service.hasPassword) {
+                        const savedPassword = await secureStorage.getPassword(service.id);
+                        if (savedPassword) {
+                            setExistingPassword(savedPassword);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking password setup:', error);
+                }
+            };
+
             // Check password feature and load existing password
             checkPasswordSetup();
         }
     }, [service]);
-
-    const checkPasswordSetup = async () => {
-        if (!service?.id) return;
-
-        try {
-            // Check if password feature is enabled
-            const enabled = await secureStorage.isPasswordFeatureEnabled();
-            setPasswordFeatureEnabled(enabled);
-
-            // Check if service has existing password
-            if (service.hasPassword) {
-                const savedPassword = await secureStorage.getPassword(service.id);
-                if (savedPassword) {
-                    setExistingPassword(savedPassword);
-                }
-            }
-        } catch (error) {
-            console.error('Error checking password setup:', error);
-        }
-    };
 
     const handleAuthenticateForPassword = async () => {
         if (passwordAuthenticated) {

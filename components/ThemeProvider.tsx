@@ -38,7 +38,7 @@ export function ThemeProvider({children}: { children: React.ReactNode }) {
         const resolvedTheme = resolveTheme(theme, deviceColorScheme);
         setActualTheme(resolvedTheme);
         setNativewindColorScheme(resolvedTheme);
-    }, [theme, deviceColorScheme]);
+    }, [theme, deviceColorScheme, setNativewindColorScheme]);
 
     const loadThemePreference = async () => {
         try {

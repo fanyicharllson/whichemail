@@ -49,6 +49,7 @@ export const UniqueEmailsModal: React.FC<UniqueEmailsModalProps> = ({
             await Clipboard.setStringAsync(text);
             showToast.success('Email Copied!', 'Copied to clipboard');
         } catch (error) {
+            console.error("Error in start modal: ", error)
             showToast.error('Copy Failed', 'Unable to copy');
         }
     };
