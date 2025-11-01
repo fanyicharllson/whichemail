@@ -8,6 +8,8 @@ import {
   View,
 } from "react-native";
 import { useEffect, useState } from "react";
+import * as Application from 'expo-application';
+import Constants from 'expo-constants';
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
@@ -41,6 +43,7 @@ export default function Settings() {
   const { actualTheme } = useTheme();
   const { data: services = [] } = useServices();
   const { deleteAllPasswords, isDeleting } = useDeleteAllPasswords();
+  const [appVersion, setAppVersion] = useState<string>('');
 
   const whatsappNumber = "237670242458";
   const message =
@@ -51,6 +54,12 @@ export default function Settings() {
 
   useEffect(() => {
     checkSettings();
+    // Read app version from native runtime where available, fall back to manifest
+    const versionFromNative = (Application && (Application.nativeApplicationVersion || Application.nativeBuildVersion)) as string | undefined;
+    const versionFromConfig =
+      ((Constants as any)?.manifest as any)?.version ||
+      (Constants as any)?.expoConfig?.version;
+    setAppVersion(versionFromNative || versionFromConfig || '');
   }, []);
 
   const openWhatsApp = async () => {
@@ -334,7 +343,7 @@ export default function Settings() {
                   Version
                 </Text>
                 <Text className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
-                  2.0.0
+                  {appVersion || '2.0.0'}
                 </Text>
               </View>
             </View>
